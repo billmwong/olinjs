@@ -82,4 +82,16 @@ router.get('/cats/bycolor/:color', function(req,res,next) {
 	});
 })
 
+router.get('/cats/middleaged', function(req,res,next) {
+	Cat.find({age: {$gt:20, $lt:60}}, function(err, cats) {
+		var sortedCats = cats.sort(function(a,b) {
+			return a.age - b.age;
+		})
+		res.render('cats', {
+			catsByAge: sortedCats,
+			showing: 'middle-aged cats'
+		})
+	});
+})
+
 module.exports = router;
