@@ -1,5 +1,5 @@
 <h1>Your Ingredients</h1>
-<table border="1">
+<table border="1" id='ing-table'>
 	<tr>
 		<th>Name</th>
 		<th>Price</th>
@@ -16,7 +16,7 @@
 	{{/each}}
 </table>
 <h2>Add New Ingredient</h2>
-<form id="add-ingredient-form" action="getCat" method="POST">
+<form id="add-ingredient-form" action="overrideMe" method="POST">
 	Name: <input type="text" name="name"/><br/>
 	Price: <input type="text" name="price"/><br/>
 	<input type="submit" value="Submit">
