@@ -2,16 +2,21 @@
 // var Handlebars = hbs.Handlebars;
 
 var $addForm = $('#add-ingredient-form');
-console.log('loaded main.js')
 
-var onSuccess = function(data, status) {
-	var template = Handlebars.compile("<tr><td>{{name}}</td><td>{{price}}</td><td>out of stock button</td><td>edit button</td></tr>")
-	$('#ing-table').append(template(data));
+var onSuccessAddIng = function(data, status) {
+	var compiledTemplate = Handlebars.templates['tableRowTemplate.hbs'];
+	$('#ing-table').append(compiledTemplate(data));
 };
 
 var onError = function(data, status) {
 	console.log("status", status);
 	console.log("error", data);
+};
+
+var onSuccessStock = function(data, status) {
+	var compiledTemplate = Handlebars.templates['tableRowTemplate.hbs'];
+	$('#'+data._id).replaceWith(compiledTemplate(data));
+	console.log('successfully toggled stock')
 };
 
 $addForm.submit(function(event) {
@@ -22,6 +27,18 @@ $addForm.submit(function(event) {
 		name: name,
 		price: price
 	})
-		.done(onSuccess)
+		.done(onSuccessAddIng)
 		.error(onError);
 });
+
+var toggleStock = function() {
+	var thisRowId = $(this).closest("tr").attr('id');
+	$.post('stockIng', {
+		id: thisRowId
+	})
+		.done(onSuccessStock)
+		.error(onError);
+};
+
+$('.outStockBtn').click(toggleStock);
+$('.inStockBtn').click(toggleStock);

@@ -1,11 +1,16 @@
+var Ingredient = require('../models/ingredientModel.js');
+
 var routes = {};
 
 routes.addIngPOST = function(req, res) {
-	// console.log(req.body.name);
-	res.send({
-		name: 'poop',
-		price: 99
+	var thisIng = new Ingredient({
+		name: req.body.name,
+		price: req.body.price,
+		inStock: true
 	});
+	thisIng.save();
+	console.log(JSON.stringify(thisIng));
+	res.send(thisIng);
 };
 
 module.exports = routes;

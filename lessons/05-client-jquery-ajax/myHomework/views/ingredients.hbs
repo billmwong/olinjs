@@ -7,11 +7,15 @@
 		<th>Edit</th>
 	</tr>
 	{{#each ingredients}}
-		<tr>
-			<td>{{name}}</td>
-			<td>{{price}}</td>
-			<td>out of stock button</td>
-			<td>edit button</td>
+		<tr id="{{_id}}">
+		  <td>{{name}}</td>
+		  <td>{{price}}</td>
+		  {{#if inStock}}
+		    <td><input class="outStockBtn" type="button" value="Out of Stock"></td>
+		  {{else}}
+		    <td><input class="inStockBtn" type="button" value="Back in Stock"></td>
+		  {{/if}}
+		  <td><input class="editBtn" type="button" value="Edit"></td>
 		</tr>
 	{{/each}}
 </table>
@@ -21,3 +25,5 @@
 	Price: <input type="text" name="price"/><br/>
 	<input type="submit" value="Submit">
 </form>
+
+
