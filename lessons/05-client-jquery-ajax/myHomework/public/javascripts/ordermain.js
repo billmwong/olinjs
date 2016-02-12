@@ -1,12 +1,19 @@
 var orderedIDs = [];
+var priceTot = 0;
 
 $('.ing-check').click(function() {
+	thisID = $(this).attr('id');
+	var thisPrice = $(this).attr('value');
+
 	if ($(this).prop('checked')) {
 		// Add item to order and price total
-		thisID = $(this).attr('value');
-		console.log(thisID)
+		orderedIDs.push(thisID);
+		priceTot += parseFloat(thisPrice)
+		$('#priceTot').html(priceTot);
 	} else {
 		// Remove item from order and price total
-		console.log('unchecked')
+		orderedIDs.splice(orderedIDs.indexOf(thisID), 1);
+		priceTot -= parseFloat(thisPrice)
+		$('#priceTot').html(priceTot);
 	}
 })

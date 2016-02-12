@@ -1,8 +1,11 @@
 <h1>Place an Order</h1>
 {{#each ingredients}}
 	{{#if inStock}}
-		<input class="ing-check" type="checkbox" value='{{id}}'> {{name}}: ${{price}}<br>
+		<input class="ing-check" type="checkbox" value='{{price}}' id='{{id}}'> {{name}}: ${{price}}<br>
 	{{else}}
 		<input class="ing-check" type="checkbox" value='{{id}}' disabled> {{name}}: ${{price}}<br>
 	{{/if}}
 {{/each}}
+<br>
+<h4>Price Total:</h4>
+$<div style="display:inline" id="priceTot">0</div>
