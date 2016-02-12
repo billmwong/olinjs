@@ -13,4 +13,10 @@ router.get('/ingredients', function(req, res, next) {
 	});
 });
 
+router.get('/order', function(req, res, next) {
+	Ingredient.find({}, function(err, ings) {
+		res.render('order', {ingredients: ings});
+	});
+});
+
 module.exports = router;
