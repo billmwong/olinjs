@@ -19,6 +19,7 @@ mongoose.connect('mongodb://localhost/burgerStuff')
 
 var addIng = require('./routes/addIng.js');
 var stockIng = require('./routes/stockIng');
+var editIng = require('./routes/editIng');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -33,6 +34,7 @@ app.use('/users', users);
 
 app.post('/addIng', addIng.addIngPOST);
 app.post('/stockIng', stockIng.stockIngPOST);
+app.post('/editIng', editIng.editIngPOST);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
