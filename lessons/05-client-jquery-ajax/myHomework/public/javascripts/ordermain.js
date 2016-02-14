@@ -21,6 +21,7 @@ $('.ing-check').click(function() {
 });
 
 var onSuccess = function(data, status) {
+	// Show submitted text, then fade it out gradually
 	$('#submitted-text').show();
 	$('#submitted-text').fadeOut(3000, function() {
 		console.log('faded');
@@ -34,7 +35,6 @@ var onError = function(data, status) {
 
 $orderForm.submit(function(event) {
 	event.preventDefault();
-	console.log('orderIDs: ' + orderedIDs);
 	$.post("addOrder", {
 		ingredients: orderedIDs
 	})
