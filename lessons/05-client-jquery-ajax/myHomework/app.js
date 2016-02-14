@@ -20,9 +20,10 @@ mongoose.connect('mongodb://localhost/burgerStuff')
 var addIng = require('./routes/addIng.js');
 var stockIng = require('./routes/stockIng');
 var editIng = require('./routes/editIng');
+var addOrder = require('./routes/addOrder.js');
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -35,6 +36,7 @@ app.use('/users', users);
 app.post('/addIng', addIng.addIngPOST);
 app.post('/stockIng', stockIng.stockIngPOST);
 app.post('/editIng', editIng.editIngPOST);
+app.post('/addOrder', addOrder.addOrderPOST);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,3 +1,5 @@
+var $orderForm = $('#submit-order-form');
+
 var orderedIDs = [];
 var priceTot = 0;
 
@@ -16,4 +18,26 @@ $('.ing-check').click(function() {
 		priceTot -= parseFloat(thisPrice)
 		$('#priceTot').html(priceTot);
 	}
-})
+});
+
+var onSuccess = function(data, status) {
+	$('#submitted-text').show();
+	$('#submitted-text').fadeOut(3000, function() {
+		console.log('faded');
+	})
+};
+
+var onError = function(data, status) {
+	console.log("status", status);
+	console.log("error", data);
+};
+
+$orderForm.submit(function(event) {
+	event.preventDefault();
+	console.log('orderIDs: ' + orderedIDs);
+	$.post("addOrder", {
+		ingredients: orderedIDs
+	})
+		.done(onSuccess)
+		.error(onError);
+});
