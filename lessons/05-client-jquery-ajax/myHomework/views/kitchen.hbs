@@ -1,0 +1,12 @@
+<h1>The Kitchen</h1>
+<p>Showing all pending orders</p>
+<ul>
+	{{#each orders}}
+		<li>
+			<input class="completedBtn" type="button" value="Completed">
+			{{#each ingredients}}
+				{{name}}
+			{{/each}}
+		</li>
+	{{/each}}
+</ul>

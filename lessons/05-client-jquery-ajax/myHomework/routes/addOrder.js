@@ -4,21 +4,22 @@ var mongoose = require('mongoose');
 var routes = {};
 
 routes.addOrderPOST = function(req, res) {
+	var IDs = req.body['ingredients[]'];
 	// JS passes the ingredients as a string instead of an array
 	// if there's only one ingredient for some reason...
-	var IDs = req.body['ingredients[]'];
 	if (typeof IDs === 'string') {
 		IDs = [IDs];
 	}
-	var castedIDs = [];
-	for (var i=0; i<IDs.length; i++) {
-		castedIDs.push(mongoose.Types.ObjectId(IDs[i]));
-	}
+	// var castedIDs = [];
+	// for (var i=0; i<IDs.length; i++) {
+	// 	castedIDs.push(mongoose.Types.ObjectId(IDs[i]));
+	// }
 
 	var thisOrder = new Order({
-		ingredients: castedIDs
+		ingredients: IDs
 	});
 	thisOrder.save();
+	// thisOrder.populate('ingredients');
 	res.send(thisOrder);
 };
 

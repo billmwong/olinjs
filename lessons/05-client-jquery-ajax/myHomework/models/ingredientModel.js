@@ -6,4 +6,4 @@ var ingredientSchema = mongoose.Schema({
 	inStock: Boolean
 });
 
-module.exports = mongoose.model("ingredient", ingredientSchema);
+module.exports = mongoose.model("Ingredient", ingredientSchema);

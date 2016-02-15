@@ -6,6 +6,13 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
+var Ingredient = require('./models/ingredientModel.js');
+var Order = require('./models/orderModel.js');
+
+mongoose.connect('mongodb://localhost/burgerStuff');
+// require("./models/ingredientModel.js");
+// require("./models/orderModel.js");
+
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
@@ -15,7 +22,6 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
-mongoose.connect('mongodb://localhost/burgerStuff')
 
 var addIng = require('./routes/addIng.js');
 var stockIng = require('./routes/stockIng');
