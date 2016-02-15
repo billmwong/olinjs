@@ -2,7 +2,7 @@
 <p>Showing all pending orders</p>
 <ul>
 	{{#each orders}}
-		<li>
+		<li id="{{_id}}">
 			<input class="completedBtn" type="button" value="Completed">
 			{{#each ingredients}}
 				{{name}}

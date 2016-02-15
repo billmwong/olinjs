@@ -1,5 +1,5 @@
 var Order = require('../models/orderModel.js');
-var mongoose = require('mongoose');
+// var mongoose = require('mongoose');
 
 var routes = {};
 
@@ -18,9 +18,13 @@ routes.addOrderPOST = function(req, res) {
 	var thisOrder = new Order({
 		ingredients: IDs
 	});
-	thisOrder.save();
-	// thisOrder.populate('ingredients');
-	res.send(thisOrder);
+	// thisOrder.save();
+	console.log('saving...')
+	thisOrder.save(function (err) {
+		if (err) return handleError(err);
+		console.log('saved')
+		res.send(thisOrder);
+	});
 };
 
 module.exports = routes;

@@ -20,12 +20,10 @@ $('.ing-check').click(function() {
 	}
 });
 
-var onSuccess = function(data, status) {
+var onSuccessAddOrder = function(data, status) {
 	// Show submitted text, then fade it out gradually
 	$('#submitted-text').show();
-	$('#submitted-text').fadeOut(3000, function() {
-		console.log('faded');
-	})
+	$('#submitted-text').fadeOut(3000, function() { })
 };
 
 var onError = function(data, status) {
@@ -38,6 +36,6 @@ $orderForm.submit(function(event) {
 	$.post("addOrder", {
 		ingredients: orderedIDs
 	})
-		.done(onSuccess)
+		.done(onSuccessAddOrder)
 		.error(onError);
 });

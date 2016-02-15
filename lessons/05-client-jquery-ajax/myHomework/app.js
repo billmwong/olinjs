@@ -10,8 +10,6 @@ var Ingredient = require('./models/ingredientModel.js');
 var Order = require('./models/orderModel.js');
 
 mongoose.connect('mongodb://localhost/burgerStuff');
-// require("./models/ingredientModel.js");
-// require("./models/orderModel.js");
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -27,6 +25,7 @@ var addIng = require('./routes/addIng.js');
 var stockIng = require('./routes/stockIng');
 var editIng = require('./routes/editIng');
 var addOrder = require('./routes/addOrder.js');
+var delOrder = require('./routes/delOrder.js');
 
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -43,6 +42,7 @@ app.post('/addIng', addIng.addIngPOST);
 app.post('/stockIng', stockIng.stockIngPOST);
 app.post('/editIng', editIng.editIngPOST);
 app.post('/addOrder', addOrder.addOrderPOST);
+app.post('/delOrder', delOrder.delOrderPOST);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
