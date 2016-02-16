@@ -11,8 +11,8 @@ var session = require('express-session');
 var mongoose = require('mongoose');
 var Account = require('./models/accountModel');
 var User = require('./models/userModel');
-var config = require('./oauth.js');
-var FacebookStrategy = require('passport-facebook').Strategy;
+var fbAuth = require('./fbAuth.js');
+var localAuth = require('./localAuth.js');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -76,17 +76,6 @@ app.use(function(err, req, res, next) {
   });
 });
 
-// passport.use(new LocalStrategy(
-//   function(username, password, done) {
-//     User.findOne({ username: username }, function (err, user) {
-//       if (err) { return done(err); }
-//       if (!user) { return done(null, false); }
-//       if (!user.verifyPassword(password)) { return done(null, false); }
-//       return done(null, user);
-//     });
-//   }
-// ));
-
 // passport.serializeUser(function(user, done) { 
 //   // please read the Passport documentation on how to implement this. We're now
 //   // just serializing the entire 'user' object. It would be more sane to serialize
@@ -103,7 +92,6 @@ app.use(function(err, req, res, next) {
 //   });
 // });
 
-passport.use(new LocalStrategy(Account.authenticate()));
 // passport.serializeUser(Account.serializeUser());
 // passport.deserializeUser(Account.deserializeUser());
 
@@ -128,46 +116,6 @@ passport.deserializeUser(function(id, done) {
     });
 });
 
-// config
-passport.use(new FacebookStrategy({
-    clientID: config.facebook.clientID,
-    clientSecret: config.facebook.clientSecret,
-    callbackURL: config.facebook.callbackURL
-  },
-  function(accessToken, refreshToken, profile, done) {
-    // process.nextTick(function () {
-    //   return done(null, profile);
-    // });
-    User.findOne({ oauthID: profile.id }, function(err, user) {
-      if(err) {
-        console.log(err);  // handle errors!
-      }
-      if (!err && user !== null) {
-        done(null, user);
-      } else {
-        user = new User({
-          oauthID: profile.id,
-          name: profile.displayName,
-          created: Date.now()
-        });
-        user.save(function(err) {
-          if(err) {
-            console.log(err);  // handle errors!
-          } else {
-            console.log("saving user ...");
-            done(null, user);
-          }
-        });
-      }
-    });
-  }
-));
-
-// route to authenticate the user
-// app.post('/login', passport.authenticate('local', { 
-//   successRedirect: '/accessed',
-//   failureRedirect: '/access'
-// }));
 app.post('/login', 
   passport.authenticate('local', { failureRedirect: '/login' }),
   function(req, res) {
