@@ -1,6 +1,7 @@
 var express = require('express');
 var passport = require('passport');
 var Account = require('../models/accountModel');
+var User = require('../models/userModel');
 var router = express.Router();
 
 
@@ -54,7 +55,13 @@ router.get('/auth/facebook/callback',
 );
 
 router.get('/account', ensureAuthenticated, function(req, res){
-    res.render('account', { user: req.user });
+  User.findById(req.session.passport.user, function(err, user) {
+    if(err) {
+      console.log(err);  // handle errors
+    } else {
+      res.render('account', { user: user});
+    }
+  });
 });
 
 function ensureAuthenticated(req, res, next) {

@@ -10,6 +10,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var session = require('express-session');
 var mongoose = require('mongoose');
 var Account = require('./models/accountModel');
+var User = require('./models/userModel');
 var config = require('./oauth.js');
 var FacebookStrategy = require('passport-facebook').Strategy;
 
@@ -106,12 +107,25 @@ passport.use(new LocalStrategy(Account.authenticate()));
 // passport.serializeUser(Account.serializeUser());
 // passport.deserializeUser(Account.deserializeUser());
 
+// // serialize and deserialize
+// passport.serializeUser(function(user, done) {
+//   done(null, user);
+// });
+// passport.deserializeUser(function(obj, done) {
+//   done(null, obj);
+// });
+
 // serialize and deserialize
 passport.serializeUser(function(user, done) {
-  done(null, user);
+  console.log('serializeUser: ' + user._id);
+  done(null, user._id);
 });
-passport.deserializeUser(function(obj, done) {
-  done(null, obj);
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user){
+    console.log(user);
+      if(!err) done(null, user);
+      else done(err, null);
+    });
 });
 
 // config
@@ -121,8 +135,30 @@ passport.use(new FacebookStrategy({
     callbackURL: config.facebook.callbackURL
   },
   function(accessToken, refreshToken, profile, done) {
-    process.nextTick(function () {
-      return done(null, profile);
+    // process.nextTick(function () {
+    //   return done(null, profile);
+    // });
+    User.findOne({ oauthID: profile.id }, function(err, user) {
+      if(err) {
+        console.log(err);  // handle errors!
+      }
+      if (!err && user !== null) {
+        done(null, user);
+      } else {
+        user = new User({
+          oauthID: profile.id,
+          name: profile.displayName,
+          created: Date.now()
+        });
+        user.save(function(err) {
+          if(err) {
+            console.log(err);  // handle errors!
+          } else {
+            console.log("saving user ...");
+            done(null, user);
+          }
+        });
+      }
     });
   }
 ));
