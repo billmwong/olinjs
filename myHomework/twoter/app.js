@@ -4,11 +4,18 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var session = require('express-session');
+var mongoose = require('mongoose');
+var Account = require('./models/accountModel');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+
+mongoose.connect('mongodb://localhost/twoter');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -21,6 +28,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.session({ secret: 'secret' }));
+app.use(session({
+  secret: 'secret',
+  resave: false,
+  saveUninitialized: false ,
+  cookie: {}
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/', routes);
 app.use('/users', users);
@@ -56,5 +72,46 @@ app.use(function(err, req, res, next) {
   });
 });
 
+// passport.use(new LocalStrategy(
+//   function(username, password, done) {
+//     User.findOne({ username: username }, function (err, user) {
+//       if (err) { return done(err); }
+//       if (!user) { return done(null, false); }
+//       if (!user.verifyPassword(password)) { return done(null, false); }
+//       return done(null, user);
+//     });
+//   }
+// ));
+
+// passport.serializeUser(function(user, done) { 
+//   // please read the Passport documentation on how to implement this. We're now
+//   // just serializing the entire 'user' object. It would be more sane to serialize
+//   // just the unique user-id, so you can retrieve the user object from the database
+//   // in .deserializeUser().
+//   done(null, user.id);
+// });
+
+// passport.deserializeUser(function(id, done) { 
+//   // Again, read the documentation.
+//   // done(null, user);
+//   User.findById(id, function (err, user) {
+//     done(err, user);
+//   });
+// });
+
+passport.use(new LocalStrategy(Account.authenticate()));
+passport.serializeUser(Account.serializeUser());
+passport.deserializeUser(Account.deserializeUser());
+
+// route to authenticate the user
+// app.post('/login', passport.authenticate('local', { 
+//   successRedirect: '/accessed',
+//   failureRedirect: '/access'
+// }));
+app.post('/login', 
+  passport.authenticate('local', { failureRedirect: '/login' }),
+  function(req, res) {
+    res.redirect('/');
+  });
 
 module.exports = app;
