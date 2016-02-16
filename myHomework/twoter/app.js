@@ -104,16 +104,22 @@ app.use(function(err, req, res, next) {
 // });
 
 // serialize and deserialize
+// TODO I need to call Account.serializeUser() if it's a local auth,
+// how do I do that???
 passport.serializeUser(function(user, done) {
-  console.log('serializeUser: ' + user._id);
+  // console.log('typeof user: ' + JSON.stringify(user));
+  console.log('serializing...');
+  // console.log('salt: ' + user.salt)
+  // console.log('this is a fb user');
   done(null, user._id);
 });
 passport.deserializeUser(function(id, done) {
+  console.log('trying to deserialize....')
   User.findById(id, function(err, user){
-    console.log(user);
-      if(!err) done(null, user);
-      else done(err, null);
-    });
+    // console.log(JSON.stringify(user));
+    if(!err) done(null, user);
+    else done(err, null);
+  });
 });
 
 app.post('/login', 

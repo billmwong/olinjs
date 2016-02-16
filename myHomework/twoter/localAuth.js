@@ -1,8 +1,8 @@
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-var Account = require('./models/accountModel');
+var User = require('./models/userModel');
 
-module.exports = passport.use(new LocalStrategy(Account.authenticate()));
+module.exports = passport.use(new LocalStrategy(User.authenticate()));
 
 // passport.use(new LocalStrategy(
 //   function(username, password, done) {

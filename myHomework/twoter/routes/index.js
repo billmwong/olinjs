@@ -1,11 +1,15 @@
 var express = require('express');
 var passport = require('passport');
-var Account = require('../models/accountModel');
+// var Account = require('../models/accountModel');
 var User = require('../models/userModel');
 var router = express.Router();
 
 
 router.get('/', function (req, res) {
+    // thisUser = req.user;
+    // if (thisUser.name === undefined) {
+    //     thisUser.name = thisUser.username;
+    // }
     res.render('index', { user : req.user });
 });
 
@@ -14,7 +18,7 @@ router.get('/register', function(req, res) {
 });
 
 router.post('/register', function(req, res) {
-    Account.register(new Account({ username : req.body.username }), req.body.password, function(err, account) {
+    User.register(new User({ username : req.body.username }), req.body.password, function(err, account) {
         if (err) {
             return res.render('register', {info: "Sorry. That username already exists. Try again."});
         }
@@ -50,7 +54,7 @@ router.get('/auth/facebook',
 router.get('/auth/facebook/callback',
     passport.authenticate('facebook', { failureRedirect: '/' }),
     function(req, res) {
-        res.redirect('/account');
+        res.redirect('/');
     }
 );
 
