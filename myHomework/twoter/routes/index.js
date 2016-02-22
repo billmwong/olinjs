@@ -1,8 +1,8 @@
 var express = require('express');
 var passport = require('passport');
-// var Account = require('../models/accountModel');
-var User = require('../models/userModel');
 var router = express.Router();
+var User = require('../models/userModel');
+var Twote = require('../models/twoteModel.js')
 
 
 router.get('/', function (req, res) {
@@ -10,7 +10,15 @@ router.get('/', function (req, res) {
     // if (thisUser.name === undefined) {
     //     thisUser.name = thisUser.username;
     // }
-    res.render('index', { user : req.user });
+    Twote.find({})
+        .sort({_id: -1})
+        .populate('creator')
+        .exec(function(err, twotes) {
+            res.render('index', {
+                user : req.user,
+                twotes: twotes
+            });
+        });
 });
 
 router.get('/register', function(req, res) {
@@ -18,10 +26,10 @@ router.get('/register', function(req, res) {
 });
 
 router.post('/register', function(req, res) {
-    User.register(new User({ username : req.body.username }), req.body.password, function(err, account) {
-        if (err) {
-            return res.render('register', {info: "Sorry. That username already exists. Try again."});
-        }
+    User.register(new User({ username : req.body.username, name : req.body.username}), req.body.password, function(err, account) {
+        // if (err) {
+        //     return res.render('register', {info: "Sorry. That username already exists. Try again."});
+        // }
 
         passport.authenticate('local')(req, res, function () {
             res.redirect('/');
@@ -42,9 +50,9 @@ router.get('/logout', function(req, res) {
     res.redirect('/');
 });
 
-router.get('/ping', function(req, res){
-    res.status(200).send("pong!");
-});
+// router.get('/ping', function(req, res){
+//     res.status(200).send("pong!");
+// });
 
 router.get('/auth/facebook',
     passport.authenticate('facebook'),
@@ -58,7 +66,9 @@ router.get('/auth/facebook/callback',
     }
 );
 
+
 router.get('/account', ensureAuthenticated, function(req, res){
+  // DEPRECATED
   User.findById(req.session.passport.user, function(err, user) {
     if(err) {
       console.log(err);  // handle errors

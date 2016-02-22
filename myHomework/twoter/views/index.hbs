@@ -1,10 +1,20 @@
 {{#if user}}
-	{{#if user.name}}
-		<p>You are currently logged in as {{user.name}}</p>
-	{{else}}
-		<p>You are currently logged in as {{user.username}}</p>
-	{{/if}}
+	<p>You are currently logged in as {{user.name}}</p>
+	<form id="new-twote-form" action="overrideMe" method="POST">
+		<h4>New Twote</h4>
+		<input type="text" name="text" class="form-control" placeholder="Enter a New Twote"/><br/>
+		<input type="submit" value="Submit" class="btn btn-default">
+	</form>
+	<br><br>
+	<div id="twote-wall">
+		{{#each twotes}}
+			<div class="well">{{text}} --{{creator.name}}</div>
+		{{/each}}
+	</div>
+	<br><br>
 	<a href="/logout">Logout</a>
+
+
 {{else}}
 	<a href="/login">Login</a>
 	<br>

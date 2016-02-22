@@ -9,10 +9,11 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var session = require('express-session');
 var mongoose = require('mongoose');
-var Account = require('./models/accountModel');
+// var Account = require('./models/accountModel');
 var User = require('./models/userModel');
 var fbAuth = require('./fbAuth.js');
 var localAuth = require('./localAuth.js');
+var Twote = require('./models/twoteModel.js')
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -45,6 +46,9 @@ app.use(passport.session());
 app.use('/', routes);
 app.use('/users', users);
 
+var newTwote = require('./routes/newTwote.js')
+app.post('/newTwote', newTwote.newTwotePOST);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
@@ -76,47 +80,14 @@ app.use(function(err, req, res, next) {
   });
 });
 
-// passport.serializeUser(function(user, done) { 
-//   // please read the Passport documentation on how to implement this. We're now
-//   // just serializing the entire 'user' object. It would be more sane to serialize
-//   // just the unique user-id, so you can retrieve the user object from the database
-//   // in .deserializeUser().
-//   done(null, user.id);
-// });
-
-// passport.deserializeUser(function(id, done) { 
-//   // Again, read the documentation.
-//   // done(null, user);
-//   User.findById(id, function (err, user) {
-//     done(err, user);
-//   });
-// });
-
+// serialize and deserialize
 // passport.serializeUser(Account.serializeUser());
 // passport.deserializeUser(Account.deserializeUser());
-
-// // serialize and deserialize
-// passport.serializeUser(function(user, done) {
-//   done(null, user);
-// });
-// passport.deserializeUser(function(obj, done) {
-//   done(null, obj);
-// });
-
-// serialize and deserialize
-// TODO I need to call Account.serializeUser() if it's a local auth,
-// how do I do that???
 passport.serializeUser(function(user, done) {
-  // console.log('typeof user: ' + JSON.stringify(user));
-  console.log('serializing...');
-  // console.log('salt: ' + user.salt)
-  // console.log('this is a fb user');
   done(null, user._id);
 });
 passport.deserializeUser(function(id, done) {
-  console.log('trying to deserialize....')
   User.findById(id, function(err, user){
-    // console.log(JSON.stringify(user));
     if(!err) done(null, user);
     else done(err, null);
   });
