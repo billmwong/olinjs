@@ -1,4 +1,5 @@
-var $newTwoteForm = $('#new-twote-form')
+var $newTwoteForm = $('#new-twote-form');
+var $twoteWall = $('#twote-wall');
 
 var onError = function(data, status) {
 	console.log("status", status);
@@ -8,11 +9,13 @@ var onError = function(data, status) {
 
 var onSuccessNewTwote = function(data, status) {
 	// Show the new twote
-	$('#twote-wall').prepend('<div class="well">' +
-		data.text +
-		' --' +
-		data.creator.name+
-		'</div>')
+	var compiledTemplate = Handlebars.templates['twoteTemplate.hbs'];
+	$twoteWall.prepend(compiledTemplate(data));
+};
+
+var onSuccessDeleteTwote = function(data, status) {
+	// Delete the twote from the display
+	$('#'+data._id).remove();
 };
 
 $newTwoteForm.submit(function(event) {
@@ -24,3 +27,13 @@ $newTwoteForm.submit(function(event) {
 		.done(onSuccessNewTwote)
 		.error(onError);
 });
+
+$twoteWall.on('click', '.delete-twote-btn', function() {
+	var twoteID = $(this).closest("div").attr('id');
+	console.log(twoteID);
+	$.post('delTwote', {
+		id: twoteID
+	})
+		.done(onSuccessDeleteTwote)
+		.error(onError);
+})

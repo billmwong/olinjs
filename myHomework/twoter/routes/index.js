@@ -6,18 +6,17 @@ var Twote = require('../models/twoteModel.js')
 
 
 router.get('/', function (req, res) {
-    // thisUser = req.user;
-    // if (thisUser.name === undefined) {
-    //     thisUser.name = thisUser.username;
-    // }
     Twote.find({})
         .sort({_id: -1})
         .populate('creator')
         .exec(function(err, twotes) {
-            res.render('index', {
-                user : req.user,
-                twotes: twotes
-            });
+            User.find({}, function(err, users) {
+                res.render('index', {
+                    user: req.user,
+                    twotes: twotes,
+                    users: users
+                });
+            })
         });
 });
 
