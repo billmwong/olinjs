@@ -50,6 +50,7 @@ $('.user-btn').click(function() {
 	}
 });
 
+
 // TAKEN FROM http://bootsnipp.com/snippets/featured/jquery-checkbox-buttons
 $('.button-checkbox').each(function () {
 

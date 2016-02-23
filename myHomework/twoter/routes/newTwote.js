@@ -3,7 +3,6 @@ var Twote = require('../models/twoteModel.js');
 var routes = {};
 
 routes.newTwotePOST = function(req, res) {
-	// console.log(JSON.stringify(req.user));
 	var text = req.body.twoteText;
 	var thisTwote = new Twote({
 		text: text,

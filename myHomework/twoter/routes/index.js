@@ -49,10 +49,6 @@ router.get('/logout', function(req, res) {
     res.redirect('/');
 });
 
-// router.get('/ping', function(req, res){
-//     res.status(200).send("pong!");
-// });
-
 router.get('/auth/facebook',
     passport.authenticate('facebook'),
     function(req, res){}
@@ -64,18 +60,6 @@ router.get('/auth/facebook/callback',
         res.redirect('/');
     }
 );
-
-
-router.get('/account', ensureAuthenticated, function(req, res){
-  // DEPRECATED
-  User.findById(req.session.passport.user, function(err, user) {
-    if(err) {
-      console.log(err);  // handle errors
-    } else {
-      res.render('account', { user: user});
-    }
-  });
-});
 
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) { return next(); }

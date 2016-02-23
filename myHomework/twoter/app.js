@@ -91,8 +91,6 @@ app.use(function(err, req, res, next) {
 });
 
 // serialize and deserialize
-// passport.serializeUser(Account.serializeUser());
-// passport.deserializeUser(Account.deserializeUser());
 passport.serializeUser(function(user, done) {
   done(null, user._id);
 });
