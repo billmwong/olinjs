@@ -26,9 +26,10 @@ router.get('/register', function(req, res) {
 
 router.post('/register', function(req, res) {
     User.register(new User({ username : req.body.username, name : req.body.username}), req.body.password, function(err, account) {
-        // if (err) {
-        //     return res.render('register', {info: "Sorry. That username already exists. Try again."});
-        // }
+        if (err) {
+            // return res.render('register', {info: "Sorry. That username already exists. Try again."});
+            return res.status(500).send(err.message);
+        }
 
         passport.authenticate('local')(req, res, function () {
             res.redirect('/');
