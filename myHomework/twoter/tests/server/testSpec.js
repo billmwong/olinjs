@@ -74,27 +74,4 @@ describe("index", function() {
 				done();
 			});
 	})
-
-	// User.remove({username: usertemp})
-	// User.findOne({username: usertemp}, function(err, thisUser) {
-	// 	thisUser.remove(function(err) {});
-	// })
-	// User.find({username: usertemp})
-	// 	.remove(function(err, thisUser) { });
 });
-
-// describe("The app", function() {
-// 	it('should return 200 OK on POST /newTwote', function(done) {
-// 	  request(app)
-// 	    .post('/newTwote')
-// 	    .send({twoteText: "blah"})
-// 	    .expect(200, done);
-// 	});
-
-// 	it('should return 200 OK on POST /delTwote', function(done) {
-// 	  request(app)
-// 	    .post('/delTwote')
-// 	    .send({id: "idman"})
-// 	    .expect(200, done);
-// 	});
-// })
