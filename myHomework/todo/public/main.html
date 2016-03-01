@@ -28,7 +28,7 @@
         </div>
 
         <div id="todo-list" class="row text-center">
-          <h1>Pending Todos ({{ (todos|filter:{completed: false}).length }})</h1>
+          <h1>Pending Todos <span class="label label-default">{{ (todos|filter:{completed: false}).length }}</span></h1>
           <div class="col-sm-8 col-sm-offset-2">
             <div ng-repeat="todo in todos">
               <div ng-if="todo.completed == false">
