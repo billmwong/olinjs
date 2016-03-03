@@ -46,7 +46,7 @@ app.controller("mainController", function ($scope, $http) {
   };
 
   $scope.editTodo = function (id) {
-    // Edit the text of the mongo entry
+    // Edit the text of the mongo entry and reload the todos
     $http.post('api/todos/edit', {
       id: id,
       newText: $scope.editInputs[id]
