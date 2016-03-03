@@ -54,6 +54,19 @@ router.post('/api/todos/toggleComplete', function(req, res) {
   });
 });
 
+router.post('/api/todos/edit', function(req, res) {
+  Todo.findById(req.body.id, function (err, todo) {
+    if (err) console.log(err);
 
+    todo.text = req.body.newText;
+    todo.save(function (err) {
+      if (err) res.send(err)
+      Todo.find(function(err, todos) {
+        if (err) res.send(err)
+        res.json(todos);
+      });
+    })
+  });
+});
 
 module.exports = router;

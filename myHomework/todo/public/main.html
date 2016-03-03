@@ -27,26 +27,43 @@
           </form>
         </div>
 
-        <div id="todo-list" class="row text-center">
+        <!-- Pending Todo List -->
+        <div id="todo-list-pending" class="row text-center">
           <h1>Pending Todos <span class="label label-default">{{ (todos|filter:{completed: false}).length }}</span></h1>
           <div class="col-sm-8 col-sm-offset-2">
             <div ng-repeat="todo in todos">
               <div ng-if="todo.completed == false">
+                <!-- Todo text and buttons -->
                 {{todo.text}}
                 <button type="button" class="btn btn-success" ng-click="toggleComplete(todo._id)">Complete</button>
-                <button type="button" class="btn btn-warning" ng-click="editTodo(todo._id)">Edit</button>
+                <button type="button" class="btn btn-warning" data-toggle="collapse" data-target="#coll{{todo._id}}" ng-click="openEdit(todo._id, todo.text)">Edit</button>
                 <button type="button" class="btn btn-danger" ng-click="deleteTodo(todo)">Delete</button>
+
+                <!-- Edit Item Collapsible -->
+                <div id="coll{{todo._id}}" class="collapse">
+                  <form class="form" role="form">
+                      <div class="input-group">
+                        <input type="text" class="form-control input-sm text-center" ng-model="editInputs[todo._id]">
+                        <span class="input-group-btn">
+                          <button type="submit" class="btn btn-primary btn-sm" ng-click="editTodo(todo._id)" data-toggle="collapse" data-target="#coll{{todo._id}}">Edit Todo</button>
+                          <button class="btn btn-danger btn-sm" data-toggle="collapse" data-target="#coll{{todo._id}}">Cancel</button>
+                        </span>
+                      </div>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div id="todo-list" class="row text-center">
+
+        <!-- Completed Todo List -->
+        <div id="todo-list-completed" class="row text-center">
           <h1>Completed Todos</h1>
             <div class="col-sm-8 col-sm-offset-2">
               <div ng-repeat="todo in todos">
                 <div ng-if="todo.completed == true">
                   {{todo.text}}
-                  <button type="button" class="btn btn-primary" ng-click="toggleComplete(todo._id)">Pending</button>
+                  <button type="button" class="btn btn-primary" ng-click="toggleComplete(todo._id)">Un-Complete</button>
                   <button type="button" class="btn btn-danger" ng-click="deleteTodo(todo)">Delete</button>
                 </div>
               </div>
