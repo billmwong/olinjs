@@ -4,6 +4,8 @@ var $editDiv = $('#edit-div');
 var $editForm = $('#edit-ingredient-form');
 
 // Made this a global variable, is this bad practice?
+// I don't think so -- it's clear what you're doing with it.
+// Maybe good to clear it out in the onSuccessEditIng, though.
 var editID = "";
 
 var onSuccessAddIng = function(data, status) {
@@ -19,14 +21,12 @@ var onError = function(data, status) {
 var onSuccessStock = function(data, status) {
 	var compiledTemplate = Handlebars.templates['tableRowTemplate.hbs'];
 	$('#'+data._id).replaceWith(compiledTemplate(data));
-	console.log('successfully toggled stock');
 };
 
 var onSuccessEditIng = function(data, status) {
 	var compiledTemplate = Handlebars.templates['tableRowTemplate.hbs'];
 	$('#'+data._id).replaceWith(compiledTemplate(data));
 	$editDiv.hide()
-	console.log('successfully edited ingredient');
 };
 
 $addForm.submit(function(event) {
@@ -55,7 +55,7 @@ $ingTable.on('click', '.inStockBtn', toggleStock);
 
 $ingTable.on('click', '.editBtn', function() {
 	if ($editDiv.is(':visible')) {
-		$editDiv.hide()
+		$editDiv.hide() // the edit hide/show is a nice touch :)
 	} else {
 		var $thisRow = $(this).closest("tr")
 		var thisRowId = $thisRow.attr('id');
@@ -80,3 +80,5 @@ $editForm.submit(function(event) {
 		.done(onSuccessEditIng)
 		.error(onError);
 });
+
+// This is all really clean and well-written -- nice job!
